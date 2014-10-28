@@ -179,10 +179,11 @@ class DbConnectable implements iDbConnectable
                    [1]=> array(4) { ["id"]=> string(1) "3" ["head"]=> string(3) "333" ["text"]=> string(4) "4444" ["user_id"]=> string(1) "2" } 
           } 
         */        
-               
-        $array_relation = $this->get_table_relation($result,$with);                                 
-                   
-        $key_rel_this = $this->relations[$with][0];
+        
+        if($with){       
+            $array_relation = $this->get_table_relation($result,$with);                                 
+            $key_rel_this = $this->relations[$with][0];
+        }
         
         while($row = each($result)){
             
@@ -190,7 +191,9 @@ class DbConnectable implements iDbConnectable
                       
             $new_obj = new $class_name($row['value']);
             
-            $new_obj->$key_rel_this = $array_relation[$new_obj->$key_rel_this];
+            if($with){       
+                $new_obj->$key_rel_this = $array_relation[$new_obj->$key_rel_this];
+            }
             
             array_push($result_array, $new_obj);
             
